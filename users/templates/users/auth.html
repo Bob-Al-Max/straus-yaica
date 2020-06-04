@@ -1,0 +1,71 @@
+{% extends 'front/base.html' %}
+{% load static %}
+
+
+{% block mainblock %}
+
+     <main>
+        <div class="main-wrapper pb-0 mb-0">
+            <div class="timeline-wrapper">
+                <div class="timeline-header">
+                    <div class="container-fluid p-0">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col-lg-6">
+                                <div class="timeline-logo-area d-flex align-items-center">
+                                    <div class="timeline-logo" >
+                                        <a href="/" style="position:relative;top:30px">
+                                            <img src="{{main.logo.url}}" alt="timeline logo" style="height:60px">
+                                        </a>
+                                    </div>
+                                    <div class="timeline-tagline">
+                                        <h6 class="tagline">It’s helps you to connect and share with the people in your life</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6" style="margin-top: 80px;">
+                                <div class="login-area">
+                                <form action="{% url 'app_login' %}" method="post">
+                                {% csrf_token %}
+                                    <div class="row align-items-center">
+                                        <div class="col-12 col-sm">
+                                            <input type="text" placeholder="Email" name="email" class="single-field">
+                                        </div>
+                                        <div class="col-12 col-sm">
+                                            <input type="password" placeholder="Password" name="password" class="single-field">
+                                        </div>
+                                        <div class="col-12 col-sm-auto">
+                                            <button class="login-btn">Login</button>
+                                        </div>
+                                    </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-page-wrapper">
+                    <div class="container-fluid p-0">
+                        <div class="row no-gutters">
+                            <div class="col-lg-6 order-2 order-lg-1">
+                                <div class="timeline-bg-content bg-img" data-bg="https://images-na.ssl-images-amazon.com/images/I/91iuG5KYjOL._AC_SL1500_.jpg">
+                                    <h3 class="timeline-bg-title">Let’s see what’s happening to you and your world. Welcome in Adda.</h3>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 order-1 order-lg-2 d-flex align-items-center justify-content-center">
+                                <div class="signup-form-wrapper">
+                                    <h1 class="create-acc text-center">Create An Account</h1>
+                                    <div class="signup-inner text-center">
+                                        <h3 class="title">Wellcome to Adda</h3>
+                                      <!--------------here will be signup form---------------------------------->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+{% endblock %}

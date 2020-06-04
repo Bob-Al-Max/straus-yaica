@@ -1,0 +1,32 @@
+{% extends 'front/base.html' %}
+{% load static %}
+
+{% block mainblock %}
+
+ <main style="margin-top:100px">
+
+       <div class="container">
+           <div class="col-md-12">
+               {% for team in teams %}
+                  <div class="col-md-3">
+                    {% if team.emblem.url != '' %}
+                    <a href="/team/{{team.pk}}">
+                    <img src="{{team.emblem.url}}" alt="" class="img-responsive">
+                    </a>
+
+                    {% endif %}
+
+                      <h4 class="text-center">
+                        <a href="/team/{{team.pk}}">
+                        {{team.title}}
+                        </a>
+
+                      </h4>
+                  </div>
+               {% endfor %}
+           </div>
+       </div>
+
+    </main>
+
+{% endblock %}

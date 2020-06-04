@@ -1,0 +1,7 @@
+<h1>users</h1>
+
+<ul>
+{% for i in users %}
+<li><a href="/user/{{i.pk}}/">{{i.email}}</a></li>
+{% endfor %}
+</ul>
