@@ -9,6 +9,7 @@ from django.views.generic import RedirectView
 from django.core.paginator import Paginator
 from django.views.generic.detail import DetailView
 from django.views.generic.list import MultipleObjectMixin
+from django.views.generic.edit import UpdateView
 
 
 from team.models import Team
@@ -47,7 +48,7 @@ def user_list(request):
 
 class UserDetailView(DetailView,MultipleObjectMixin):
     model = CustomUser
-    template_name = 'users/user_detail.html'
+    template_name = 'users/user-detail2.html'
     context_object_name = "user"
     paginate_by = 5
     
@@ -58,6 +59,7 @@ class UserDetailView(DetailView,MultipleObjectMixin):
 
 
     def get_context_data(self, **kwargs):
+        
         object_list = Posts.objects.filter(author=self.get_object())
         #posts = self.object.posts_set.all().order_by('-created_at')
         context = super(UserDetailView, self).get_context_data(object_list=object_list,**kwargs)
@@ -67,7 +69,14 @@ class UserDetailView(DetailView,MultipleObjectMixin):
         context['main'] = Main.objects.get(pk=1)
         context['supporters'] = CustomUser.objects.filter(team = self.object.team)
         
-        return context    
+        return context
+
+
+
+class UserUpdate(UpdateView):
+    model = CustomUser
+    fields = ['team','profile_img']
+    template_name_suffix = '_update_form'            
 
 
             

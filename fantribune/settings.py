@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'pytils',
     
     
+    
 ]
 
 MIDDLEWARE = [
@@ -143,6 +144,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 AUTH_USER_MODEL = 'users.CustomUser'
 
-CRISPY_TEMPLATE_PACK = 'bootstrap3'
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 AUTH_USER_MODEL = 'users.CustomUser'

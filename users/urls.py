@@ -15,6 +15,7 @@ urlpatterns = [
     
     path('user/addpost/', views.add_post, name="add_post"),
     path('user/<int:id>/', views.UserDetailView.as_view(), name='user-detail'),
+    re_path(r'^user-update/(?P<pk>\d+)/$', views.UserUpdate.as_view(), name='user-update'),
 
   
    

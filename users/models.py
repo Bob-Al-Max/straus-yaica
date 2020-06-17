@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import ugettext_lazy as _
+from django.urls import reverse
 
 from .managers import CustomUserManager
 from team.models import Team
@@ -19,3 +20,7 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.email
+
+
+    def get_absolute_url(self):
+        return reverse('user-detail', kwargs={'id': self.id})     
