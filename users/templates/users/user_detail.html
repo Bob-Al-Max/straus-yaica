@@ -307,9 +307,9 @@
                        {% endif %}           
 
 
-                    
-                     {% for post in posts %}
-                        <div class="card">
+                    <div class="row infinite-container">
+                     {% for post in object_list %}
+                        <div class="infinite-item card">
 
                             <!-- post title start -->
                             <div class="post-title d-flex align-items-center">
@@ -395,8 +395,16 @@
                         </div>
 
                        {% endfor %}
+                     </div>
                      
-
+                     {% if page_obj.has_next %}
+                <a class="infinite-more-link" href="?page={{ page_obj.next_page_number }}"></a>
+                {% endif %}
+                <div class="d-flex justify-content-center" style="display:none;">
+                    <div class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
      
 
 
@@ -560,4 +568,8 @@
 
     </main>
 
+    
 {% endblock %}
+
+
+

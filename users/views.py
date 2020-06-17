@@ -6,6 +6,10 @@ from django.core.files.storage import FileSystemStorage
 from main.models import Main
 from posts.models import Posts
 from django.views.generic import RedirectView
+from django.core.paginator import Paginator
+from django.views.generic.detail import DetailView
+from django.views.generic.list import MultipleObjectMixin
+
 
 from team.models import Team
 
@@ -23,15 +27,53 @@ def user_list(request):
 
 
 
-def user_detail(request, pk):
+# def user_detail(request, pk):
 
-    main = Main.objects.get(pk=1)
-    user = CustomUser.objects.get(pk=pk)
-    posts = user.posts_set.all().order_by('-created_at')
-    supporters = CustomUser.objects.filter(team = user.team)
-    context = {'user':user, 'posts':posts, 'main':main,'supporters':supporters}
+#     main = Main.objects.get(pk=1)
+#     user = CustomUser.objects.get(pk=pk)
+#     posts = user.posts_set.all().order_by('-created_at')
+#     paginator = Paginator(posts, 4)
 
-    return render(request, 'users/user_detail.html', context)
+#     page_number = request.GET.get('page')
+#     page_obj = paginator.get_page(page_number)
+
+#     supporters = CustomUser.objects.filter(team = user.team)
+#     context = {'user':user, 'posts':posts, 'main':main,'supporters':supporters, 'page_obj': page_obj}
+
+#     print(paginator)
+
+#     return render(request, 'users/user_detail.html', context)
+
+
+class UserDetailView(DetailView,MultipleObjectMixin):
+    model = CustomUser
+    template_name = 'users/user_detail.html'
+    context_object_name = "user"
+    paginate_by = 5
+    
+
+    def get_object(self):
+        id_ = self.kwargs.get('id')
+        return get_object_or_404(CustomUser, id=id_)
+
+
+    def get_context_data(self, **kwargs):
+        object_list = Posts.objects.filter(author=self.get_object())
+        #posts = self.object.posts_set.all().order_by('-created_at')
+        context = super(UserDetailView, self).get_context_data(object_list=object_list,**kwargs)
+        #context['posts'] = self.object.posts_set.all().order_by('-created_at')
+
+        
+        context['main'] = Main.objects.get(pk=1)
+        context['supporters'] = CustomUser.objects.filter(team = self.object.team)
+        
+        return context    
+
+
+            
+        
+        
+
 
 
 
