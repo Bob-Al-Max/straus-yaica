@@ -1,46 +1,124 @@
+
 {% extends 'front/base.html' %}
 {% load static %}
 {% load humanize %}
 
+
+
 {% block mainblock %}
+    
+    <main>
 
- <main>
+        <div class="main-wrapper">
+        {% if user.team.banner.url != '' %}
+            <div class="profile-banner-large bg-img" data-bg="{{user.team.banner.url}}">
+            </div>
+        {% else %} 
+            <div class="profile-banner-large bg-img" data-bg="https://s1.eestatic.com/2018/12/11/enfoques/Enfoques_359977699_109499973_1706x960.jpg">
+            </div>
+        {% endif %}    
+            <div class="profile-menu-area bg-white">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-3 col-md-3">
+                            <div class="profile-picture-box">
+                                {% if user.profile_img != '' %} 
+                                <figure class="profile-picture">
+                                    <a href="profile.html">
+                                        <img src="{{user.profile_img.url}}" alt="profile picture">
+                                    </a>
+                                </figure>
+                                {% else %}
+                              <figure class="profile-picture">
+                                    <a href="profile.html">
+                                        <img src="{% static 'front' %}/assets/images/banner/banner-small.jpg" alt="profile picture">
+                                    </a>
+                                </figure>
 
-        <div class="main-wrapper pt-80">
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 offset-lg-1">
+                            <div class="profile-menu-wrapper">
+                                <div class="main-menu-inner header-top-navigation">
+                                    <nav>
+                                        <ul class="main-menu">
+                                            <li class="active"><a href="/team/{{user.team.pk}}/">discussion</a></li>
+                                            <li><a href="about.html">about</a></li>
+                                            <li><a href="photos.html">photos</a></li>
+                                            <li><a href="friends.html">friends</a></li>
+                                            <li><a id="follow" class="btn" style="background:lightblue:color#fff;" href="">Follow</a></li>
+                                            <!-- <li class="d-inline-block d-md-none"><a href="profile.html">edit profile</a></li> -->
+                                        </ul>
+                                         <script>
+
+  </script>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-3 d-none d-md-block">
+                            <div class="profile-edit-panel">
+                                <button class="edit-btn">edit profile</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="container">
                 <div class="row">
                     <div class="col-lg-3 order-2 order-lg-1">
-                        <aside class="widget-area">
+                        <aside class="widget-area profile-sidebar">
                             <!-- widget single item start -->
-                            <div class="card card-profile widget-item p-0">
-                                <div class="profile-banner">
-                                    
-                                   {% if team.emblem.url != '' %} 
-                                    <figure class="profile-banner-small">
-                                        <a href="profile.html">
-                                            <img src="{{team.emblem.url}}" alt="">
-                                        </a>
+                            <div class="card widget-item">
+                                <h4 class="widget-title">kate palson</h4>
+                                <div class="widget-body">
+                                    <div class="about-author">
+                                        <p>I Don’t know how? But i believe that it is possible one day if i stay with my dream all time</p>
                                         
-                                    </figure>
-                                    {% else %}
-                                     
-                                      <figure class="profile-banner-small">
-                                        <a href="profile.html">
-                                            <img src="{% static 'front' %}/assets/images/banner/banner-small.jpg" alt="">
-                                        </a>
+                                        <p>
+
+    {% with total_followers=user.followers.count %}
+    <span class="count">
+      <span class="total">{{ total_followers }}</span>
+      follower{{ total_followers|pluralize }}
+    </span>
+    <a href="#" data-id="{{ user.id }}" data-action="{% if request.user in user.followers.all %}un{% endif %}follow" class="follow button">
+      {% if request.user not in user.followers.all %}
+        Follow
+      {% else %}
+        Unfollow
+      {% endif %}
+    </a>
+    
+  {% endwith %}
+                                        </p>
                                         
-                                    </figure>
-
-                                    {% endif %}
-
-                                    <div class="profile-desc text-center">
-                                        <h6 class="author"><a href="profile.html">{{team.title}}</a></h6>
-                                        <p>Supporters: {{supporters.count}}</p>
-                                        <p><a href="/team-info/{{team.pk}}/">Detail Info</a></p>
+                                        
+                                        <ul class="author-into-list">
+                                            <li><a href="#"><i class="bi bi-office-bag"></i>Graphic Designer</a></li>
+                                            <li><a href="#"><i class="bi bi-home"></i>Melbourne, Australia</a></li>
+                                            <li><a href="#"><i class="bi bi-location-pointer"></i>Pulshar, Melbourne</a></li>
+                                            <li><a href="#"><i class="bi bi-heart-beat"></i>Travel, Swimming</a></li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
+                            <!-- widget single item end -->
+
                             <!-- widget single item start -->
+                            <div class="card widget-item">
+                                <h4 class="widget-title">Sweets Memories</h4>
+                                <div class="widget-body">
+                                    <div class="sweet-galley img-gallery">
+                                        <div class="row row-5">
+                                          
+                                          <h6>I should see the logic of this.</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- widget single item end -->
 
                             <!-- widget single item start -->
                             <div class="card widget-item">
@@ -52,7 +130,7 @@
                                             <div class="profile-thumb">
                                                 <a href="#">
                                                     <figure class="profile-thumb-small">
-                                                        <img src="{% static 'front' %}/assets/images/profile/profile-small-33.jpg" alt="profile picture">
+                                                        <img src="assets/images/profile/profile-small-33.jpg" alt="profile picture">
                                                     </figure>
                                                 </a>
                                             </div>
@@ -72,7 +150,7 @@
                                             <div class="profile-thumb">
                                                 <a href="#">
                                                     <figure class="profile-thumb-small">
-                                                        <img src="{% static 'front' %}/assets/images/profile/profile-small-30.jpg" alt="profile picture">
+                                                        <img src="assets/images/profile/profile-small-30.jpg" alt="profile picture">
                                                     </figure>
                                                 </a>
                                             </div>
@@ -92,7 +170,7 @@
                                             <div class="profile-thumb">
                                                 <a href="#">
                                                     <figure class="profile-thumb-small">
-                                                        <img src="{% static 'front' %}/assets/images/profile/profile-small-5.jpg" alt="profile picture">
+                                                        <img src="assets/images/profile/profile-small-5.jpg" alt="profile picture">
                                                     </figure>
                                                 </a>
                                             </div>
@@ -112,7 +190,7 @@
                                             <div class="profile-thumb">
                                                 <a href="#">
                                                     <figure class="profile-thumb-small">
-                                                        <img src="{% static 'front' %}/assets/images/profile/profile-small-29.jpg" alt="profile picture">
+                                                        <img src="assets/images/profile/profile-small-29.jpg" alt="profile picture">
                                                     </figure>
                                                 </a>
                                             </div>
@@ -131,101 +209,11 @@
                                 </div>
                             </div>
                             <!-- widget single item end -->
-
-                            <!-- widget single item start -->
-                            <div class="card widget-item">
-                                <h4 class="widget-title">latest top news</h4>
-                                <div class="widget-body">
-                                    <ul class="like-page-list-wrapper">
-                                        <li class="unorder-list">
-                                            <!-- profile picture end -->
-                                            <div class="profile-thumb">
-                                                <a href="#">
-                                                    <figure class="profile-thumb-small">
-                                                        <img src="{% static 'front' %}/assets/images/profile/profile-small-28.jpg" alt="profile picture">
-                                                    </figure>
-                                                </a>
-                                            </div>
-                                            <!-- profile picture end -->
-
-                                            <div class="unorder-list-info">
-                                                <h3 class="list-title"><a href="#">Any one can join with us if you want</a></h3>
-                                                <p class="list-subtitle">2 min ago</p>
-                                            </div>
-                                        </li>
-                                        <li class="unorder-list">
-                                            <!-- profile picture end -->
-                                            <div class="profile-thumb">
-                                                <a href="#">
-                                                    <figure class="profile-thumb-small">
-                                                        <img src="{% static 'front' %}/assets/images/profile/profile-small-31.jpg" alt="profile picture">
-                                                    </figure>
-                                                </a>
-                                            </div>
-                                            <!-- profile picture end -->
-
-                                            <div class="unorder-list-info">
-                                                <h3 class="list-title"><a href="#">Any one can join with us if you want</a></h3>
-                                                <p class="list-subtitle">20 min ago</p>
-                                            </div>
-                                        </li>
-                                        <li class="unorder-list">
-                                            <!-- profile picture end -->
-                                            <div class="profile-thumb">
-                                                <a href="#">
-                                                    <figure class="profile-thumb-small">
-                                                        <img src="{% static 'front' %}/assets/images/profile/profile-small-27.jpg" alt="profile picture">
-                                                    </figure>
-                                                </a>
-                                            </div>
-                                            <!-- profile picture end -->
-
-                                            <div class="unorder-list-info">
-                                                <h3 class="list-title"><a href="#">Any one can join with us if you want</a></h3>
-                                                <p class="list-subtitle">30 min ago</p>
-                                            </div>
-                                        </li>
-                                        <li class="unorder-list">
-                                            <!-- profile picture end -->
-                                            <div class="profile-thumb">
-                                                <a href="#">
-                                                    <figure class="profile-thumb-small">
-                                                        <img src="{% static 'front' %}/assets/images/profile/profile-small-34.jpg" alt="profile picture">
-                                                    </figure>
-                                                </a>
-                                            </div>
-                                            <!-- profile picture end -->
-
-                                            <div class="unorder-list-info">
-                                                <h3 class="list-title"><a href="#">Any one can join with us if you want</a></h3>
-                                                <p class="list-subtitle">40 min ago</p>
-                                            </div>
-                                        </li>
-                                        <li class="unorder-list">
-                                            <!-- profile picture end -->
-                                            <div class="profile-thumb">
-                                                <a href="#">
-                                                    <figure class="profile-thumb-small">
-                                                        <img src="{% static 'front' %}/assets/images/profile/profile-small-32.jpg" alt="profile picture">
-                                                    </figure>
-                                                </a>
-                                            </div>
-                                            <!-- profile picture end -->
-
-                                            <div class="unorder-list-info">
-                                                <h3 class="list-title"><a href="#">Any one can join with us if you want</a></h3>
-                                                <p class="list-subtitle">39 min ago</p>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <!-- widget single item end -->
                         </aside>
                     </div>
 
                     <div class="col-lg-6 order-1 order-lg-2">
-                        {% if request.user.team == team %}
+                    {% if user == request.user %}   
                         <!-- share box start -->
                         <div class="card card-small">
                             <div class="share-box-inner">
@@ -260,7 +248,7 @@
                                 <div class="modal fade" id="textbox" aria-labelledby="textbox">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
-                                            <form action="{% url 'add_team_post' pk=team.pk %}" method="post" enctype="multipart/form-data">
+                                            <form action="{% url 'add_post' %}" method="post" enctype="multipart/form-data">
                                             {% csrf_token %}
                                             <div class="modal-header">
                                                 <h5 class="modal-title">Share Your Mood</h5>
@@ -302,11 +290,12 @@
                             </div>
                         </div>
                         <!-- share box end -->
-                      {% endif %}
-                                  
+                     
+                       {% endif %}   
 
+                       <div class="row infinite-container">
                      {% for post in posts %}
-                        <div class="card">
+                        <div class="infinite-item card">
 
                             <!-- post title start -->
                             <div class="post-title d-flex align-items-center">
@@ -356,7 +345,6 @@
                                 <p class="post-desc pb-0">
                                     {{post.content}}
                                 </p>
-                                
                                 {% if post.image.url != '' %}
                                 <div class="post-thumb-gallery">
                                     <figure class="post-thumb img-popup">
@@ -366,11 +354,12 @@
                                     </figure>
                                 </div>
                                 {% endif %}
-
+<p class="lk-wp"><a href="" data-href='{{ post.get_api_like_url }}' data-likes='{{ post.likes.count }}' class="like-result">❤ {{post.likes.count}}  </a></p>
                                 <div class="post-meta">
+                                
+                                <p><a style="border: 1px solid grey;padding:10px;" data-href='{{ post.get_api_like_url }}'  data-likes='{{ post.likes.count }}' href="{{ post.get_like_url }}" class="like-btn"> ❤ Like</a></p>
                                     <button class="post-meta-like">
-                                        <i class="bi bi-heart-beat"></i>
-                                        <span>You and 206 people like this</span>
+                                       
                                         <strong>206</strong>
                                     </button>
                                     <ul class="comment-share-meta">
@@ -392,16 +381,48 @@
                         </div>
 
                        {% endfor %}
-
-
-                        
-
-
+                     </div>
+                     
+                     {% if page_obj.has_next %}
+                <a class="infinite-more-link" href="?page={{ page_obj.next_page_number }}"></a>
+                {% endif %}
+                <div class="d-flex justify-content-center" style="display:none;">
+                    <div class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
                     </div>
 
-                    <div class="col-lg-3 order-3">
+                    
+                        <div class="col-lg-3 order-3">
                         <aside class="widget-area">
+                         
+
                             <!-- widget single item start -->
+                            <div class="card widget-item">
+                                <h4 class="widget-title">Team</h4>
+                                <div class="widget-body">
+                                    <div class="add-thumb">
+                                        <a href="/team/{{user.team.pk}}/">
+
+                                            {% if user.team.emblem != '' %}
+
+                                            <img src="{{user.team.emblem.url}}" alt="advertisement">
+
+                                            {% else %}
+
+
+                                            <img src="{% static 'front' %}/assets/images/banner/advertise.jpg" alt="advertisement">
+
+                                            {% endif %}
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- widget single item end -->
+
+
+                         <!-- widget single item start -->
                             <div class="card widget-item">
                                 <h4 class="widget-title">{{team.title}} supporters</h4>
                                 <div class="widget-body">
@@ -412,7 +433,7 @@
                                         <li class="unorder-list">
                                             <!-- profile picture end -->
                                             <div class="profile-thumb">
-                                                <a href="#">
+                                                <a href="/user/{{fan.pk}}/">
                                                     <figure class="profile-thumb-small">
                                                         <img src="{{fan.profile_img.url}}" alt="profile picture">
                                                     </figure>
@@ -421,7 +442,7 @@
                                             <!-- profile picture end -->
 
                                             <div class="unorder-list-info">
-                                                <h3 class="list-title"><a href="#">{{fan.email}}</a></h3>
+                                                <h3 class="list-title"><a href="/user/{{fan.pk}}/">{{fan.email}}</a></h3>
                                                 <p class="list-subtitle">5 min ago</p>
                                             </div>
                                         </li>
@@ -433,18 +454,6 @@
                             </div>
                             <!-- widget single item end -->
 
-                            <!-- widget single item start -->
-                            <div class="card widget-item">
-                                <h4 class="widget-title">Advertizement</h4>
-                                <div class="widget-body">
-                                    <div class="add-thumb">
-                                        <a href="#">
-                                            <img src="{% static 'front' %}/assets/images/banner/advertise.jpg" alt="advertisement">
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- widget single item end -->
 
                             <!-- widget single item start -->
                             <div class="card widget-item">
@@ -537,10 +546,46 @@
                             <!-- widget single item end -->
                         </aside>
                     </div>
+                    </div>
                 </div>
             </div>
         </div>
 
     </main>
+{% endblock %}
 
+
+
+{% block domready %}
+  $('a.follow').click(function(e){
+    e.preventDefault();
+    console.log($(this));
+    $.post('{% url "user_follow" %}',
+      {
+        id: $(this).data('id'),
+        action: $(this).data('action')
+      },
+      function(data){
+        if (data['status'] == 'ok') {
+          var previous_action = $('a.follow').data('action');
+
+          // toggle data-action
+          $('a.follow').data('action',
+            previous_action == 'follow' ? 'unfollow' : 'follow');
+          // toggle link text
+          $('a.follow').text(
+            previous_action == 'follow' ? 'Unfollow' : 'Follow');
+
+          // update total followers
+          var previous_followers = parseInt(
+            $('span.count .total').text());
+          
+           $('span.count .total').text(previous_action == 'follow' ? previous_followers + 1 : previous_followers - 1);
+           
+           
+       
+        }
+      }
+    );
+  });
 {% endblock %}

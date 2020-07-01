@@ -126,7 +126,8 @@
                         <div class="header-top-navigation">
                             <nav>
                                 <ul>
-                                    <li class="active"><a href="index.html">home</a></li>
+                                    <li class="active"><a href="/">home</a></li>
+                                     <li class="active"><a href="/users/">Users</a></li>
                                     <li class="msg-trigger"><a class="msg-trigger-btn" href="#a">message</a>
                                         <div class="message-dropdown" id="a">
                                             <div class="dropdown-title">
@@ -607,7 +608,8 @@
     <script src="{% static 'front' %}/assets/js/main.js"></script>
 
     
-    <script src="{% static 'front/assets/js/jquery.waypoints.min.js' %}"></script>
+
+ <script src="{% static 'front/assets/js/jquery.waypoints.min.js' %}"></script>
     <script src="{% static 'front/assets/js/infinite.min.js' %}"></script>
 
 <script>
@@ -615,7 +617,6 @@
       {% block jquery %}{% endblock %}
     })
     </script>
-
 
     <script>
     var infinite = new Waypoint.Infinite({
@@ -635,6 +636,27 @@
     });
 
     </script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+  <script>
+    var csrftoken = Cookies.get('csrftoken');
+    function csrfSafeMethod(method) {
+      // these HTTP methods do not require CSRF protection
+      return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+    $.ajaxSetup({
+      beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+          xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+      }
+    });
+    $(document).ready(function(){
+      {% block domready %}
+      {% endblock %}
+       });
+  </script>
 </body>
 
 </html>
