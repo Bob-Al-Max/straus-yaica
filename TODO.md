@@ -58,6 +58,10 @@ git checkout -b <newbranchname>
 git branch -d <branchname>
 
 
+#Игнорировать .pyc файлы кэша, которые мешают merge
+find . -name "*.pyc" -exec git rm -f "{}" \; 
+
+
 
 Trophies 
 
