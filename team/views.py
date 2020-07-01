@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.core.files.storage import FileSystemStorage
-from .models import Team, TeamPosts
+from .models import Team, TeamPosts, Trophies
 
 from main.models import Main
 from users.models import CustomUser
@@ -22,13 +22,32 @@ def team_detail(request, pk):
 
     main = Main.objects.get(pk=1)
     team = Team.objects.get(pk=pk)
-    supporters = CustomUser.objects.filter(team=team)
+    #supporters = CustomUser.objects.filter(team=team)
 
+    supporters = team.customuser_set.all()
+
+    
    
 
     posts = TeamPosts.objects.filter(team=pk).order_by('-created_at')
 
     return render(request ,'team/team-detail.html',{'main':main,'team':team,'posts':posts,'supporters':supporters})
+
+
+
+def team_info(request, pk):
+    main = Main.objects.get(pk=1)
+    team = Team.objects.get(pk=pk)
+    #supporters = CustomUser.objects.filter(team=team)
+    trophies = team.trophies_set.all()
+
+    supporters = team.customuser_set.all()
+
+    posts = TeamPosts.objects.filter(team=pk).order_by('-created_at')
+
+    return render(request ,'team/team-info.html',{'main':main,'team':team,'posts':posts,'supporters':supporters, 'trophies':trophies})
+
+
 
 
 def add_team_post(request, pk):

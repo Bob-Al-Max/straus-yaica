@@ -23,7 +23,17 @@
                                         <a href="profile.html">
                                             <img src="{{user.profile_img.url}}" alt="">
                                         </a>
-                                        
+                                        {% with total_followers=user.followers.count %} 
+                                <span class="count">
+                               <span class="total">{{ total_followers }}</span> 
+                                    follower{{ total_followers|pluralize }}    </span>
+                                <a href="#" data-id="{{ user.id }}" data-action="{% if request.user  in user.followers.all %}un{% endif %}follow" class="follow button"> 
+                                     {% if request.user not in user.followers.all %} 
+                                    Follow      {% else %}
+                                            Unfollow 
+                                                 {% endif %}    </a>  
+                                                 
+                                                  {% endwith %}
                                     </figure>
                                     {% else %}
                                      
@@ -38,7 +48,8 @@
 
                                     <div class="profile-desc text-center">
                                         <h6 class="author"><a href="profile.html">{{team.title}}</a></h6>
-                                        <p>Aditional info about the team.</p>
+                                        <p>Aditional info about the team. | <a href="" class="btn btn-primary">Follow</a></p>
+                                        <p><a href="" class="btn btn-primary">Follow</a></p>
                                     </div>
                                 </div>
                             </div>
@@ -46,6 +57,14 @@
 
                             <!-- widget single item start -->
                             <div class="card widget-item">
+
+
+
+                             
+
+
+
+
                                 <h4 class="widget-title">page you may like</h4>
                                 <div class="widget-body">
                                     <ul class="like-page-list-wrapper">
@@ -309,7 +328,7 @@
 
 
                     <div class="row infinite-container">
-                     {% for post in object_list %}
+                     {% for post in posts %}
                         <div class="infinite-item card">
 
                             <!-- post title start -->

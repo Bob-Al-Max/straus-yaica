@@ -11,7 +11,7 @@ urlpatterns = [
     #path('like/', views.like_post, name='like_post')
     re_path(r'^(?P<slug>[\w-]+)/like/$', views.PostLikeToggle.as_view(), name='like-toggle'),
     re_path(r'^api/(?P<slug>[\w-]+)/like/$', views.PostLikeAPIToggle.as_view(), name='like-api-toggle'),
-    
+    path('like/', views.image_like, name='like'),
    
     
     

@@ -10,6 +10,12 @@ from django.core.paginator import Paginator
 from django.views.generic.detail import DetailView
 from django.views.generic.list import MultipleObjectMixin
 from django.views.generic.edit import UpdateView
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from common.decorators import ajax_required
+from .models import Contact
+from django.contrib.auth.decorators import login_required
+
 
 
 from team.models import Team
@@ -28,22 +34,64 @@ def user_list(request):
 
 
 
-# def user_detail(request, pk):
 
-#     main = Main.objects.get(pk=1)
-#     user = CustomUser.objects.get(pk=pk)
-#     posts = user.posts_set.all().order_by('-created_at')
-#     paginator = Paginator(posts, 4)
+# def user_follow(request,pk):
+#     current_user = CustomUser.objects.get(pk=pk)
 
-#     page_number = request.GET.get('page')
-#     page_obj = paginator.get_page(page_number)
+#     #Following.objects.create(ifollow=request.user, following_me=current_user)
+#     if request.is_ajax and request.method == "GET":
+#         Follower.objects.create(follower=request.user, following=current_user)
+        
+#         return redirect('http://127.0.0.1:8000/')
+    
+    
 
-#     supporters = CustomUser.objects.filter(team = user.team)
-#     context = {'user':user, 'posts':posts, 'main':main,'supporters':supporters, 'page_obj': page_obj}
+    
 
-#     print(paginator)
 
-#     return render(request, 'users/user_detail.html', context)
+
+
+
+
+def user_detail(request, pk):
+
+    main = Main.objects.get(pk=1)
+    user = CustomUser.objects.get(pk=pk,is_active=True)
+    posts = user.posts_set.all().order_by('-created_at')
+    paginator = Paginator(posts, 4)
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    supporters = CustomUser.objects.filter(team = user.team)
+    context = {'section': 'people','user':user, 'posts':posts, 'main':main,'supporters':supporters, 'page_obj': page_obj}
+
+    print(paginator)
+
+    return render(request, 'users/user-detail2.html', context)
+
+
+
+@ajax_required
+@require_POST
+@login_required
+def user_follow(request):
+    user_id = request.POST.get('id')
+    action = request.POST.get('action')
+    if user_id and action:
+        try:
+            user = CustomUser.objects.get(id=user_id)
+            if action == 'follow':
+                Contact.objects.get_or_create(user_from=request.user,
+                                              user_to=user)
+                create_action(request.user, 'is following', user)
+            else:
+                Contact.objects.filter(user_from=request.user,
+                                       user_to=user).delete()
+            return JsonResponse({'status':'ok'})
+        except User.DoesNotExist:
+            return JsonResponse({'status':'ok'})
+    return JsonResponse({'status':'ok'})    
 
 
 class UserDetailView(DetailView,MultipleObjectMixin):
@@ -69,7 +117,11 @@ class UserDetailView(DetailView,MultipleObjectMixin):
         context['main'] = Main.objects.get(pk=1)
         context['supporters'] = CustomUser.objects.filter(team = self.object.team)
         
+        
         return context
+
+
+
 
 
 
@@ -80,36 +132,7 @@ class UserUpdate(UpdateView):
 
 
             
-        
-        
-
-
-
-
-   
-
-
-
-
-# def post_like(request,pk):
-
-#     if request.method == 'POST':
-
-#         user = request.user
-#         post = Posts.objects.get(title='New York')
-
-#         like = PostLike(user=user,post=post)
-#         like.save()
-
-
-#     return HttpResponse('like')
-
-        
-
-
-
-
-
+ 
 
 def add_post(request):
     from pytils.translit import slugify
@@ -194,6 +217,21 @@ def app_logout(request):
     logout(request)
 
     return redirect('app_login')
+
+
+
+
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+
+from .models import Contact
+
+
+
+                    
+
+
+
 
 
     

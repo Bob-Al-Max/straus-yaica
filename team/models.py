@@ -8,10 +8,25 @@ class Team(models.Model):
     founder = models.CharField(max_length=200)
     history = models.TextField()
     emblem = models.ImageField(null=True,blank=True)
+    banner = models.ImageField(null=True,blank=True)
 
 
     def __str__(self):
         return self.title
+
+
+class Trophies(models.Model):
+    title = models.CharField(max_length=90)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE)
+    won_at = models.DateField(null=True, blank=True)
+    image = models.ImageField(null=True,blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+    def __str__(self):
+        return self.title
+
 
 
 

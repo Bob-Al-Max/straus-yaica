@@ -1,0 +1,14 @@
+{% for post in posts %}
+<div class="image">
+<a href="{{ image.get_absolute_url }}">
+
+<a href="#">
+<img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Moscow_International_Business_Center20.jpg">
+</a>
+
+</a>
+<div class="info">
+<p>{{post.content}}</p>
+</div>
+</div>
+{% endfor %}

@@ -18,6 +18,14 @@ from django.urls import include, path
 
 from django.conf import settings
 from django.conf.urls.static import static
+from users.models import CustomUser
+from rest_framework import routers, serializers, viewsets
+
+ 
+
+
+
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,6 +33,7 @@ urlpatterns = [
     path('', include('users.urls')),
     path('', include('team.urls')),
     path('', include('posts.urls')),
+   # path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     
 ]
 

@@ -10,8 +10,13 @@
     <main>
 
         <div class="main-wrapper">
+        {% if user.team.banner.url != '' %}
+            <div class="profile-banner-large bg-img" data-bg="{{user.team.banner.url}}">
+            </div>
+        {% else %} 
             <div class="profile-banner-large bg-img" data-bg="https://s1.eestatic.com/2018/12/11/enfoques/Enfoques_359977699_109499973_1706x960.jpg">
             </div>
+        {% endif %}    
             <div class="profile-menu-area bg-white">
                 <div class="container">
                     <div class="row align-items-center">
@@ -38,13 +43,16 @@
                                 <div class="main-menu-inner header-top-navigation">
                                     <nav>
                                         <ul class="main-menu">
-                                            <li class="active"><a href="#">timeline</a></li>
+                                            <li class="active"><a href="/team/{{user.team.pk}}/">discussion</a></li>
                                             <li><a href="about.html">about</a></li>
                                             <li><a href="photos.html">photos</a></li>
                                             <li><a href="friends.html">friends</a></li>
-                                            <li><a href="about.html">more</a></li>
+                                            <li><a id="follow" class="btn" style="background:lightblue:color#fff;" href="">Follow</a></li>
                                             <!-- <li class="d-inline-block d-md-none"><a href="profile.html">edit profile</a></li> -->
                                         </ul>
+                                         <script>
+
+  </script>
                                     </nav>
                                 </div>
                             </div>
@@ -67,6 +75,26 @@
                                 <div class="widget-body">
                                     <div class="about-author">
                                         <p>I Don’t know how? But i believe that it is possible one day if i stay with my dream all time</p>
+                                        
+                                        <p>
+
+    {% with total_followers=user.followers.count %}
+    <span class="count">
+      <span class="total">{{ total_followers }}</span>
+      follower{{ total_followers|pluralize }}
+    </span>
+    <a href="#" data-id="{{ user.id }}" data-action="{% if request.user in user.followers.all %}un{% endif %}follow" class="follow button">
+      {% if request.user not in user.followers.all %}
+        Follow
+      {% else %}
+        Unfollow
+      {% endif %}
+    </a>
+    
+  {% endwith %}
+                                        </p>
+                                        
+                                        
                                         <ul class="author-into-list">
                                             <li><a href="#"><i class="bi bi-office-bag"></i>Graphic Designer</a></li>
                                             <li><a href="#"><i class="bi bi-home"></i>Melbourne, Australia</a></li>
@@ -84,87 +112,8 @@
                                 <div class="widget-body">
                                     <div class="sweet-galley img-gallery">
                                         <div class="row row-5">
-                                            <div class="col-4">
-                                                <div class="gallery-tem">
-                                                    <figure class="post-thumb">
-                                                        <a class="gallery-selector" href="assets/images/gallery/gallery-1.jpg">
-                                                            <img src="assets/images/gallery/gallery-1.jpg" alt="sweet memory">
-                                                        </a>
-                                                    </figure>
-                                                </div>
-                                            </div>
-                                            <div class="col-4">
-                                                <div class="gallery-tem">
-                                                    <figure class="post-thumb">
-                                                        <a class="gallery-selector" href="assets/images/gallery/gallery-2.jpg">
-                                                            <img src="assets/images/gallery/gallery-2.jpg" alt="sweet memory">
-                                                        </a>
-                                                    </figure>
-                                                </div>
-                                            </div>
-                                            <div class="col-4">
-                                                <div class="gallery-tem">
-                                                    <figure class="post-thumb">
-                                                        <a class="gallery-selector" href="assets/images/gallery/gallery-3.jpg">
-                                                            <img src="assets/images/gallery/gallery-3.jpg" alt="sweet memory">
-                                                        </a>
-                                                    </figure>
-                                                </div>
-                                            </div>
-                                            <div class="col-4">
-                                                <div class="gallery-tem">
-                                                    <figure class="post-thumb">
-                                                        <a class="gallery-selector" href="assets/images/gallery/gallery-4.jpg">
-                                                            <img src="assets/images/gallery/gallery-4.jpg" alt="sweet memory">
-                                                        </a>
-                                                    </figure>
-                                                </div>
-                                            </div>
-                                            <div class="col-4">
-                                                <div class="gallery-tem">
-                                                    <figure class="post-thumb">
-                                                        <a class="gallery-selector" href="assets/images/gallery/gallery-5.jpg">
-                                                            <img src="assets/images/gallery/gallery-5.jpg" alt="sweet memory">
-                                                        </a>
-                                                    </figure>
-                                                </div>
-                                            </div>
-                                            <div class="col-4">
-                                                <div class="gallery-tem">
-                                                    <figure class="post-thumb">
-                                                        <a class="gallery-selector" href="assets/images/gallery/gallery-6.jpg">
-                                                            <img src="assets/images/gallery/gallery-6.jpg" alt="sweet memory">
-                                                        </a>
-                                                    </figure>
-                                                </div>
-                                            </div>
-                                            <div class="col-4">
-                                                <div class="gallery-tem">
-                                                    <figure class="post-thumb">
-                                                        <a class="gallery-selector" href="assets/images/gallery/gallery-7.jpg">
-                                                            <img src="assets/images/gallery/gallery-7.jpg" alt="sweet memory">
-                                                        </a>
-                                                    </figure>
-                                                </div>
-                                            </div>
-                                            <div class="col-4">
-                                                <div class="gallery-tem">
-                                                    <figure class="post-thumb">
-                                                        <a class="gallery-selector" href="assets/images/gallery/gallery-8.jpg">
-                                                            <img src="assets/images/gallery/gallery-8.jpg" alt="sweet memory">
-                                                        </a>
-                                                    </figure>
-                                                </div>
-                                            </div>
-                                            <div class="col-4">
-                                                <div class="gallery-tem">
-                                                    <figure class="post-thumb">
-                                                        <a class="gallery-selector" href="assets/images/gallery/gallery-9.jpg">
-                                                            <img src="assets/images/gallery/gallery-9.jpg" alt="sweet memory">
-                                                        </a>
-                                                    </figure>
-                                                </div>
-                                            </div>
+                                          
+                                          <h6>I should see the logic of this.</h6>
                                         </div>
                                     </div>
                                 </div>
@@ -345,7 +294,7 @@
                        {% endif %}   
 
                        <div class="row infinite-container">
-                     {% for post in object_list %}
+                     {% for post in posts %}
                         <div class="infinite-item card">
 
                             <!-- post title start -->
@@ -603,4 +552,40 @@
         </div>
 
     </main>
+{% endblock %}
+
+
+
+{% block domready %}
+  $('a.follow').click(function(e){
+    e.preventDefault();
+    console.log($(this));
+    $.post('{% url "user_follow" %}',
+      {
+        id: $(this).data('id'),
+        action: $(this).data('action')
+      },
+      function(data){
+        if (data['status'] == 'ok') {
+          var previous_action = $('a.follow').data('action');
+
+          // toggle data-action
+          $('a.follow').data('action',
+            previous_action == 'follow' ? 'unfollow' : 'follow');
+          // toggle link text
+          $('a.follow').text(
+            previous_action == 'follow' ? 'Unfollow' : 'Follow');
+
+          // update total followers
+          var previous_followers = parseInt(
+            $('span.count .total').text());
+          
+           $('span.count .total').text(previous_action == 'follow' ? previous_followers + 1 : previous_followers - 1);
+           
+           
+       
+        }
+      }
+    );
+  });
 {% endblock %}
