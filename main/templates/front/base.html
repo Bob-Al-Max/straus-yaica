@@ -35,81 +35,7 @@
     <!-- Main Style CSS -->
     <link rel="stylesheet" href="{% static '/front/assets/css/style.css' %}">
 
-<script>
-    $(document).ready(function(){
-         function updateText(btn, newCount, verb){
-         btn.text(newCount + " " + verb)
-     }
 
-     $(".like-btn").click(function(e){
-       e.preventDefault()
-       var this_ = $(this)
-       var badge = $(this).find(".like-badge")
-       
-       var likeUrl = this_.attr("data-href")
-       var likeCount = parseInt(this_.attr("data-likes")) | 0
-       var addLike = likeCount + 1
-       var removeLike = likeCount - 1
-
-
-       function rem(data){
-         if(data.likescount == 0){
-                    like_res.remove()
-                }
-
-                return;
-       }
-       if (likeUrl){
-          $.ajax({
-           url: likeUrl,
-           method: "GET",
-           data: {
-
-           
-           },
-           success: function(data){
-             console.log(data)
-             var newLikes;
-
-             //my vars
-             var like_res = $('.like-result');
-             var lkwraper = $('.lk-wp');
-             
-             //my vars end
-            
-
-
-             if (data.liked){
-                 updateText(this_, '', "❤ Unlike")
-                 updateText(like_res, "❤", data.likescount)
-                 lkwraper.show()
-
-                
-
-             } else {
-                 updateText(this_, '', "❤ Like this")
-                 
-                 
-                 updateText(like_res, "❤", data.likescount)
-                 if(data.likescount == 0){
-                  lkwraper.hide();
-                 }
-                 
-                
-                 // remove one like
-             }
-
-           }, error: function(error){
-             console.log(error)
-             console.log("error")
-           }
-         })
-       }
-      
-     })
- })
-
-   </script>
 
 
 </head>
@@ -613,34 +539,7 @@
 
     
 
- <script src="{% static 'front/assets/js/jquery.waypoints.min.js' %}"></script>
-    <script src="{% static 'front/assets/js/infinite.min.js' %}"></script>
-
-<script>
-    $(document).ready(function(){
-      {% block jquery %}{% endblock %}
-    })
-    </script>
-
-    <script>
-    var infinite = new Waypoint.Infinite({
-        element: $('.infinite-container')[0],
-        handler: function(direction) {
-        
-    },
-    offset: 'bottom-in-view',
-
-    onBeforePageLoad: function () {
-    $('.spinner-border').show();
-    },
-    onAfterPageLoad: function () {
-    $('.spinner-border').hide();
-    }
-        
-    });
-
-    </script>
-    
+ 
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>

@@ -24,15 +24,6 @@ def post_detail(request, slug=None):
     return render(request,'posts/post-detail.html',{'post':post})
 
 
-def like_post(request):
-    post = get_object_or_404(Posts, id=request.POST.get('id'))
-    post.likes.add(request.user)
-
-    print(post)
-
-    return HttpResponseRedirect(post.get_absolute_url())
-
-
 class PostLikeToggle(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         slug = self.kwargs.get("slug")
@@ -85,22 +76,6 @@ class PostLikeAPIToggle(APIView):
         return Response(data)
 
 
-@login_required
-@require_POST
-def image_like(request):
-    post_id = request.POST.get('id')
-    action = request.POST.get('action')
-    if post_id and action:
-        try:
-            post = Posts.objects.get(id=post_id)
-            if action == 'like':
-                post.users_like.add(request.user)
-            else:
-                post.users_like.remove(request.user)
-            return JsonResponse({'status':'ok'})
-        except:
-            pass
-    return JsonResponse({'status':'ko'}) 
 
 
 @login_required

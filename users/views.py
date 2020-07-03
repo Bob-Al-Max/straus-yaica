@@ -36,7 +36,7 @@ def user_list(request):
 
     
     
-@login_required
+
 def user_detail(request, pk):
 
     main = Main.objects.get(pk=1)
@@ -50,7 +50,7 @@ def user_detail(request, pk):
     supporters = CustomUser.objects.filter(team = user.team)
     context = {'section': 'people','user':user, 'posts':posts, 'main':main,'supporters':supporters, 'page_obj': page_obj}
 
-    print(paginator)
+    
 
     return render(request, 'users/user-detail2.html', context)
 
