@@ -4,6 +4,7 @@ from posts.models import Posts
 from django.views.generic import RedirectView
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
+from django.core.files.storage import FileSystemStorage
 
 
 
@@ -99,7 +100,40 @@ def image_like(request):
             return JsonResponse({'status':'ok'})
         except:
             pass
-    return JsonResponse({'status':'ko'})  
+    return JsonResponse({'status':'ko'}) 
+
+
+@login_required
+def add_post(request):
+    from pytils.translit import slugify
+
+    
+    if request.method == 'POST':
+
+        title = request.POST.get('title')
+        content = request.POST.get('content')
+        
+
+        upload_file = request.FILES['image']
+        fs = FileSystemStorage()
+
+        image = fs.save(upload_file.name, upload_file)
+        
+
+        post = Posts(title=title, content=content, image= image)
+        post.author = request.user
+        post.slug = slugify(post.title.replace(" ", "-").lower())
+        
+        post.save()
+
+        from django.http import HttpResponseRedirect
+
+        #return redirect('user_detail', pk=request.user.pk)
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+
+    return render(request ,'team/user_detail.html')      
 
 
 

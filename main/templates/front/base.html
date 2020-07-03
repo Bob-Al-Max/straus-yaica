@@ -125,6 +125,7 @@
                         <!-- header top navigation start -->
                         <div class="header-top-navigation">
                             <nav>
+                            {% if request.user.is_authenticated %}
                                 <ul>
                                     <li class="active"><a href="/">home</a></li>
                                      <li class="active"><a href="/users/">Users</a></li>
@@ -298,6 +299,7 @@
                                         </div>
                                     </li>
                                 </ul>
+                            {% endif %}    
                             </nav>
                         </div>
                         <!-- header top navigation start -->
@@ -329,7 +331,7 @@
                                 <div class="profile-thumb-small">
                                     <a href="javascript:void(0)" class="profile-triger">
 
-                                      {% if request.user.profile_img.url != '' %}  
+                                      {% if request.user.profile_img.url %}  
                                         <figure>
                                             <img src="{{request.user.profile_img.url}}" alt="profile picture">
                                         </figure>
@@ -353,7 +355,7 @@
                                             <ul>
                                                 <li><a href="#"><i class="flaticon-settings"></i>Setting</a></li>
                                                 {% if request.user.is_authenticated %}
-                                                <li><a href="/applogout/"><i class="flaticon-unlock"></i>Sing out</a></li>
+                                                <li><a href="/logout/"><i class="flaticon-unlock"></i>Logout</a></li>
                                                 {% endif %}
                                             </ul>
                                         </div>
@@ -421,14 +423,14 @@
                                 <li>
                                     <div class="frnd-request-member">
                                         <figure class="request-thumb">
-                                            <a href="profile.html">
+                                            <a href="">
                                                 <img src="{% static 'front' %}/assets/images/profile/profile-midle-3.jpg" alt="proflie author">
                                             </a>
                                         </figure>
                                         <div class="frnd-content">
-                                            <h6 class="author"><a href="profile.html">merry watson</a></h6>
+                                            <h6 class="author"><a href="">merry watson</a></h6>
                                             <p class="author-subtitle">Works at HasTech</p>
-                                            <div class="request-btn-inner">
+                                            <div class="abcrequest-btn-inner">
                                                 <button class="frnd-btn">confirm</button>
                                                 <button class="frnd-btn delete">delete</button>
                                             </div>
@@ -520,9 +522,11 @@
                     <!-- profile picture end -->
                     <div class="profile-thumb profile-setting-box">
                         <a href="javascript:void(0)" class="profile-triger">
+                        {% if request.user.profile_img.url %}
                             <figure class="profile-thumb-middle">
                                 <img src="{{request.user.profile_img.url}}" alt="profile picture">
                             </figure>
+                        {% endif %}    
                         </a>
                         <div class="profile-dropdown text-left">
                             <div class="profile-head">
@@ -636,6 +640,7 @@
     });
 
     </script>
+    
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
