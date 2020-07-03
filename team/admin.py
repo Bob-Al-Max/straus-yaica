@@ -4,6 +4,6 @@ from .models import *
 
 
 admin.site.register(Team)
-admin.site.register(TeamPosts)
+
 admin.site.register(Trophies)
 

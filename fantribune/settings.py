@@ -33,6 +33,13 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'main.apps.MainConfig',
+    'team.apps.TeamConfig',
+    'posts.apps.PostsConfig',
+    'crispy_forms',
+    'django.contrib.humanize',
+    'rest_framework',
+    'pytils',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,13 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'users.apps.UsersConfig',
-    'team.apps.TeamConfig',
-    'posts.apps.PostsConfig',
-    'main.apps.MainConfig',
-    'crispy_forms',
-    'django.contrib.humanize',
-    'rest_framework',
-    'pytils',
+    
     
     
     
@@ -156,3 +157,9 @@ AUTH_USER_MODEL = 'users.CustomUser'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 AUTH_USER_MODEL = 'users.CustomUser'
+
+LOGIN_REDIRECT_URL = 'http://127.0.0.1:8000/'
+LOGIN_URL = 'login'
+LOGOUT_URL = 'logout'
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

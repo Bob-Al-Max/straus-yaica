@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.core.files.storage import FileSystemStorage
-from .models import Team, TeamPosts, Trophies
+from .models import Team, Trophies
+from posts.models import Posts
 
 from main.models import Main
 from users.models import CustomUser
@@ -29,7 +30,7 @@ def team_detail(request, pk):
     
    
 
-    posts = TeamPosts.objects.filter(team=pk).order_by('-created_at')
+    posts = Posts.objects.filter(author__pk__in = [s.pk for s in  supporters]).order_by('-created_at')
 
     return render(request ,'team/team-detail.html',{'main':main,'team':team,'posts':posts,'supporters':supporters})
 
@@ -50,33 +51,33 @@ def team_info(request, pk):
 
 
 
-def add_team_post(request, pk):
+# def add_team_post(request):
 
-    author = CustomUser.objects.get(pk=1)
-    team = Team.objects.get(pk=pk)
+#     author = CustomUser.objects.get(pk=1)
+    
 
     
-    if request.method == 'POST':
+#     if request.method == 'POST':
 
-        title = request.POST.get('title')
-        content = request.POST.get('content')
+#         title = request.POST.get('title')
+#         content = request.POST.get('content')
 
-        upload_file = request.FILES['image']
-        fs = FileSystemStorage()
+#         upload_file = request.FILES['image']
+#         fs = FileSystemStorage()
 
-        image = fs.save(upload_file.name, upload_file)
+#         image = fs.save(upload_file.name, upload_file)
         
 
-        post = TeamPosts(title=title, content=content, image=image)
-        post.author = author
-        post.team = team
-        post.save()
+#         post = Posts(title=title, content=content, image=image)
+#         post.author = author
+        
+#         post.save()
 
-        return redirect('team_detail', pk=pk)
+#         return redirect('team_detail', pk=pk)
 
 
 
-    return render(request ,'team/team-detail.html',{'team':team})
+#     return render(request ,'team/team-detail.html',{'team':team})
 
 
     
