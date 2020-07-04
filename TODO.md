@@ -61,6 +61,10 @@ git branch -d <branchname>
 #Игнорировать .pyc файлы кэша, которые мешают merge
 find . -name "*.pyc" -exec git rm -f "{}" \; 
 
+#and then 
+
+git stash
+
 
 
 Trophies 

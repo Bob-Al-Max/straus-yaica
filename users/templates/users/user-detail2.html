@@ -212,8 +212,9 @@
                             <!-- widget single item end -->
                         </aside>
                     </div>
-
+                       
                     <div class="col-lg-6 order-1 order-lg-2">
+         
                     {% if user == request.user %}   
                         <!-- share box start -->
                         <div class="card card-small">
@@ -244,11 +245,13 @@
                                     </form>
                                 </div>
                                 <!-- share content box end -->
-
+      
                                 <!-- Modal start -->
                                 <div class="modal fade" id="textbox" aria-labelledby="textbox">
                                     <div class="modal-dialog">
+            
                                         <div class="modal-content">
+  
                                             <form action="{% url 'add_post' %}" method="post" enctype="multipart/form-data">
                                             {% csrf_token %}
                                             <div class="modal-header">
@@ -294,7 +297,7 @@
                      
                        {% endif %}   
 
-                       <div class="row infinite-container">
+                       <div class="infinite-container">
                      {% for post in posts %}
                         <div class="infinite-item card">
 

@@ -1,0 +1,12 @@
+<form method="post" enctype="multipart/form-data">
+                                            {% csrf_token %}
+                              {{form.as_p}}
+
+
+                                            <div class="modal-footer">
+                                                <button type="button" class="post-share-btn" data-dismiss="modal">cancel</button>
+                                                
+                                                <input type="submit" value="Post" class="post-share-btn">
+                                            </div>
+                                            
+                                        </form>

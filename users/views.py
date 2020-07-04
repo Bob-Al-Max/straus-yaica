@@ -18,6 +18,7 @@ from django.contrib.auth.decorators import login_required
 
 
 
+
 from team.models import Team
 
 
@@ -117,34 +118,34 @@ class UserUpdate(UpdateView):
 
             
  
-#@login_required
-# def add_post(request):
-#     from pytils.translit import slugify
+@login_required
+def add_post(request):
+    from pytils.translit import slugify
 
     
-#     if request.method == 'POST':
+    if request.method == 'POST':
 
-#         title = request.POST.get('title')
-#         content = request.POST.get('content')
+        title = request.POST.get('title')
+        content = request.POST.get('content')
         
 
-#         upload_file = request.FILES['image']
-#         fs = FileSystemStorage()
+        upload_file = request.FILES['image']
+        fs = FileSystemStorage()
 
-#         image = fs.save(upload_file.name, upload_file)
+        image = fs.save(upload_file.name, upload_file)
         
 
-#         post = Posts(title=title, content=content, image= image)
-#         post.author = request.user
-#         post.slug = slugify(post.title.replace(" ", "-").lower())
+        post = Posts(title=title, content=content, image= image)
+        post.author = request.user
+        post.slug = slugify(post.title.replace(" ", "-").lower())
         
-#         post.save()
+        post.save()
 
-#         return redirect('user_detail', pk=request.user.pk)
+        return redirect('user_detail', pk=request.user.pk)
 
 
 
-#     return render(request ,'team/user_detail.html')    
+    return render(request ,'team/user_detail.html')    
 
 
 
@@ -166,7 +167,22 @@ def app_signup(request):
         login(request, user)
         return redirect('home')
     
-    return render(request, 'users/signup.html', {'form': form, 'main':main}) 
+    return render(request, 'users/signup.html', {'form': form, 'main':main})
+
+
+
+def user_wall(request,pk):
+    return render(request,'users/user_wall.html', {})
+
+
+
+
+
+                      
+
+
+
+    
 
 
 
