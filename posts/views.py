@@ -5,6 +5,9 @@ from django.views.generic import RedirectView
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from django.core.files.storage import FileSystemStorage
+from posts.forms import PostCreateForm
+from django.views.generic.edit import CreateView
+
 
 
 
@@ -24,15 +27,22 @@ def post_detail(request, slug=None):
     return render(request,'posts/post-detail.html',{'post':post})
 
 
+class PostCreateView(CreateView):
+    model = Posts
+    fields = ['title','content','image']
+    template_name = 'users/create.html'
 
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super(PostCreateView, self).form_valid(form)
+    
 
 
 
 
 @login_required
 def add_post(request):
-    from pytils.translit import slugify
-
+    
     
     if request.method == 'POST':
 
@@ -41,25 +51,82 @@ def add_post(request):
         
 
         upload_file = request.FILES['image']
-        fs = FileSystemStorage()
-
-        image = fs.save(upload_file.name, upload_file)
         
 
-        post = Posts(title=title, content=content, image= image)
+        post = Posts(title=title, content=content, image= upload_file)
         post.author = request.user
-        post.slug = slugify(post.title.replace(" ", "-").lower())
+        
         
         post.save()
 
         from django.http import HttpResponseRedirect
 
-        #return redirect('user_detail', pk=request.user.pk)
+        #return redirect(post.get_absolute_url())
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 
-    return render(request ,'team/user_detail.html')      
+    return render(request ,'users/user-detail2.html')  
+
+
+
+@login_required
+def post_create(request):
+    if request.method == 'POST':
+        # form is sent
+        form = PostCreateForm(data=request.POST)
+        if form.is_valid():
+            # form data is valid
+            cd = form.cleaned_data
+            new_item = form.save(commit=False)
+
+            # assign current user to the item
+            new_item.author = request.user
+            new_item.save()
+            
+
+            # redirect to new created item detail view
+            return redirect(new_item.get_absolute_url())
+    else:
+        # build form with data provided by the bookmarklet via GET
+        form = PostCreateForm(data=request.GET)
+
+    return render(request,
+                  'users/user-detail2.html',
+                  {
+                   'form': form})
+
+
+from posts.forms import ImageCreateForm
+
+@login_required
+def image_create(request):
+    if request.method == 'POST':
+        # form is sent
+        form = ImageCreateForm(data=request.POST)
+        if form.is_valid():
+            # form data is valid
+            form.cleaned_data
+            
+            new_item = form.save(commit=False)
+
+            # assign current user to the item
+            new_item.author = request.user
+            new_item.image = form.cleaned_data['image']
+            
+            new_item.save()
+            
+
+            # redirect to new created item detail view
+            return redirect(new_item.get_absolute_url())
+    else:
+        # build form with data provided by the bookmarklet via GET
+        form = ImageCreateForm(data=request.GET)
+
+    return render(request,
+                  'posts/create.html',
+                  {'section': 'images',
+                   'form': form})                          
 
 
 
