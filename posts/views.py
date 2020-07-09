@@ -3,10 +3,11 @@ from django.http import HttpResponse, HttpResponseRedirect
 from posts.models import Posts
 from django.views.generic import RedirectView
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.http import require_POST
 from django.core.files.storage import FileSystemStorage
 from posts.forms import PostCreateForm
 from django.views.generic.edit import CreateView
+from django.views.decorators.http import require_POST
+from common.decorators import ajax_required
 
 
 
@@ -126,7 +127,27 @@ def image_create(request):
     return render(request,
                   'posts/create.html',
                   {'section': 'images',
-                   'form': form})                          
+                   'form': form})
+
+
+# @ajax_required
+# @login_required
+# @require_POST
+# def post_like(request):
+#     post_id = request.POST.get('id')
+#     action = request.POST.get('action')
+#     if post_id and action:
+#         try:
+#             post = Posts.objects.get(id=post_id)
+#             if action == 'like':
+#                 post.users_like.add(request.user)
+#                 create_action(request.user, 'likes', post)
+#             else:
+#                 post.users_like.remove(request.user)
+#             return JsonResponse({'status':'ok'})
+#         except:
+#             pass
+#     return JsonResponse({'status':'ok'})                                             
 
 
 

@@ -57,26 +57,26 @@ def user_detail(request, pk):
 
 
 
-@ajax_required
-@require_POST
-@login_required
-def user_follow(request):
-    user_id = request.POST.get('id')
-    action = request.POST.get('action')
-    if user_id and action:
-        try:
-            user = CustomUser.objects.get(id=user_id)
-            if action == 'follow':
-                Contact.objects.get_or_create(user_from=request.user,
-                                              user_to=user)
-                create_action(request.user, 'is following', user)
-            else:
-                Contact.objects.filter(user_from=request.user,
-                                       user_to=user).delete()
-            return JsonResponse({'status':'ok'})
-        except User.DoesNotExist:
-            return JsonResponse({'status':'ok'})
-    return JsonResponse({'status':'ok'})    
+# @ajax_required
+# @require_POST
+# @login_required
+# def user_follow(request):
+#     user_id = request.POST.get('id')
+#     action = request.POST.get('action')
+#     if user_id and action:
+#         try:
+#             user = CustomUser.objects.get(id=user_id)
+#             if action == 'follow':
+#                 Contact.objects.get_or_create(user_from=request.user,
+#                                               user_to=user)
+#                 create_action(request.user, 'is following', user)
+#             else:
+#                 Contact.objects.filter(user_from=request.user,
+#                                        user_to=user).delete()
+#             return JsonResponse({'status':'ok'})
+#         except User.DoesNotExist:
+#             return JsonResponse({'status':'ok'})
+#     return JsonResponse({'status':'ok'})    
 
 
 # class UserDetailView(DetailView,MultipleObjectMixin):
@@ -173,6 +173,32 @@ def app_signup(request):
 
 def user_wall(request,pk):
     return render(request,'users/user_wall.html', {})
+
+
+
+
+@ajax_required
+@login_required
+@require_POST
+def post_like(request):
+    post_id = request.POST.get('id')
+    action = request.POST.get('action')
+    if post_id and action:
+        try:
+            post = Posts.objects.get(id=post_id)
+            if action == 'like':
+                post.users_like.add(request.user)
+                create_action(request.user, 'likes', post)
+            else:
+                post.users_like.remove(request.user)
+            return JsonResponse({'status':'ok'})
+        except:
+            pass
+    return JsonResponse({'status':'ok'})    
+
+
+
+    
 
 
 
