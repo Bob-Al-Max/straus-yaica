@@ -583,6 +583,7 @@
 {% block domready %}
   $('a.follow').click(function(e){
     e.preventDefault();
+    const $clickedFollowButton = $( this );
     
     $.post('{% url "user_follow" %}',
       {
@@ -591,20 +592,21 @@
       },
       function(data){
         if (data['status'] == 'ok') {
-          var previous_action = $('a.follow').data('action');
+          var previous_action = $clickedFollowButton.data('action');
 
           // toggle data-action
-          $('a.follow').data('action',
+          $clickedFollowButton.data('action',
             previous_action == 'follow' ? 'unfollow' : 'follow');
           // toggle link text
-          $('a.follow').text(
+          $clickedFollowButton.text(
             previous_action == 'follow' ? 'Unfollow' : 'Follow');
 
           // update total followers
+          const $totalFollowers = $clickedFollowButton.prev('span.count-f').children('.total-f');
           var previous_followers = parseInt(
             $('span.count-f .total-f').text());
           
-           $('span.count-f .total-f').text(previous_action == 'follow' ? previous_followers + 1 : previous_followers - 1);
+           $totalFollowers.text(previous_action == 'follow' ? previous_followers + 1 : previous_followers - 1);
            
            
        
@@ -618,23 +620,30 @@
 
   $('a.like').click(function(e){
     e.preventDefault();
-    // Get the clicked button.
     const $clickedButton = $( this );
-    
-    // Update the clicked button only.
-    var previous_action = $clickedButton.data('action');
+    $.post('/like/',
+      {
+        id: $clickedButton.data('id'),
+        action: $clickedButton.data('action')
+      },
+      function(data){
+        if (data['status'] == 'ok')
+        {
+          var previous_action = $clickedButton.data('action');
 
-    // toggle data-action
-    $clickedButton.data('action', previous_action == 'like' ? 'unlike' : 'like');
-    // toggle link text
-    $clickedButton.text(previous_action == 'like' ? 'Unlike' : 'Like');
+          // toggle data-action
+          $clickedButton.data('action', previous_action == 'like' ? 'unlike' : 'like');
+          // toggle link text
+          $clickedButton.text(previous_action == 'like' ? 'Unlike' : 'Like');
 
-    // update total likes
-    const $total = $clickedButton.prev('span.count').children('.total');
+          // update total likes
+          const $total = $clickedButton.prev('span.count').children('.total');
     var previous_likes = parseInt($total.text());
     $total.text(previous_action == 'like' ? previous_likes + 1 : previous_likes - 1);
-
-});
+        }
+      }
+    );
+  });
 {% endblock %}
 
 

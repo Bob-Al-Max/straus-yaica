@@ -58,24 +58,26 @@
  
 $('a.like').click(function(e){
     e.preventDefault();
+    const $clickedButton = $( this );
     $.post('/like/',
       {
-        id: $(this).data('id'),
-        action: $(this).data('action')
+        id: $clickedButton.data('id'),
+        action: $clickedButton.data('action')
       },
       function(data){
         if (data['status'] == 'ok')
         {
-          var previous_action = $('a.like').data('action');
+          var previous_action = $clickedButton.data('action');
 
           // toggle data-action
-          $('a.like').data('action', previous_action == 'like' ? 'unlike' : 'like');
+          $clickedButton.data('action', previous_action == 'like' ? 'unlike' : 'like');
           // toggle link text
-          $('a.like').text(previous_action == 'like' ? 'Unlike' : 'Like');
+          $clickedButton.text(previous_action == 'like' ? 'Unlike' : 'Like');
 
           // update total likes
-          var previous_likes = parseInt($('span.count .total').text());
-          $('span.count .total').text(previous_action == 'like' ? previous_likes + 1 : previous_likes - 1);
+          const $total = $clickedButton.prev('span.count').children('.total');
+    var previous_likes = parseInt($total.text());
+    $total.text(previous_action == 'like' ? previous_likes + 1 : previous_likes - 1);
         }
       }
     );
