@@ -7,7 +7,7 @@ from . import views
 urlpatterns = [
     
     path('like/', views.post_like, name='like'),
-    #path('users/follow/', views.user_follow, name='user_follow'),
+    path('users/follow/', views.user_follow, name='user_follow'),
     path('users/', views.user_list, name='user_list'),
     re_path(r'^user/(?P<pk>\d+)/$', views.user_detail, name='user_detail'),
     path('signup/', views.app_signup, name="app_signup"),

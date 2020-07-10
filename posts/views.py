@@ -130,24 +130,49 @@ def image_create(request):
                    'form': form})
 
 
-# @ajax_required
-# @login_required
-# @require_POST
-# def post_like(request):
-#     post_id = request.POST.get('id')
-#     action = request.POST.get('action')
-#     if post_id and action:
-#         try:
-#             post = Posts.objects.get(id=post_id)
-#             if action == 'like':
-#                 post.users_like.add(request.user)
-#                 create_action(request.user, 'likes', post)
-#             else:
-#                 post.users_like.remove(request.user)
-#             return JsonResponse({'status':'ok'})
-#         except:
-#             pass
-#     return JsonResponse({'status':'ok'})                                             
+@ajax_required
+@login_required
+@require_POST
+def post_like(request):
+    post_id = request.POST.get('id')
+    action = request.POST.get('action')
+    if post_id and action:
+        try:
+            post = Posts.objects.get(id=post_id)
+            if action == 'like':
+                post.users_like.add(request.user)
+                create_action(request.user, 'likes', post)
+            else:
+                post.users_like.remove(request.user)
+            return JsonResponse({'status':'ok'})
+        except:
+            pass
+    return JsonResponse({'status':'ok'})
+
+from main.models import Main
+from users.models import CustomUser
+from django.core.paginator import Paginator
+def user_posts(request, pk):
+    main = Main.objects.get(pk=1)
+    user = CustomUser.objects.get(pk=pk,is_active=True)
+    posts = user.posts_set.all().order_by('-created_at')
+    paginator = Paginator(posts, 4)
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    supporters = CustomUser.objects.filter(team = user.team)
+    context = {'section': 'people','user':user, 'posts':posts, 'main':main,'supporters':supporters, 'page_obj': page_obj}
+
+    
+
+    return render(request, 'posts/user-posts.html', context)
+
+
+def user_post_detail(request, pk):
+    post = get_object_or_404(Posts, pk=pk)
+
+    return render(request, 'posts/user-post-detail.html',{'post':post})    
 
 
 

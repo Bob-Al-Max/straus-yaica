@@ -1,0 +1,71 @@
+{% extends 'front/base.html' %}
+{% load static %}
+{% load humanize %}
+
+<div class="container" style="margin-top:300px">
+
+{% block mainblock %}
+
+
+<div class="post-content" style="margin-top:100px">
+        
+<h6 class="author">{{post.title}}</h6>
+
+<img src="{{post.image.url}}" width="300">
+
+
+
+
+
+{% with total_likes=post.users_like.count users_like=post.users_like.all %}
+    <div class="image-info">
+      <div>
+        <span class="count">
+         <span class="total">{{ total_likes }}</span>
+         like{{ total_likes|pluralize }}
+        </span>
+        
+        <a href="#" data-id="{{ post.id }}" data-action="{% if request.user in users_like %}un{% endif %}like" class="like button">
+          {% if request.user not in users_like %}
+            Like
+          {% else %}
+            Unlike
+          {% endif %}
+        </a>
+      </div>
+     
+    </div>
+    
+  {% endwith %}
+</div>
+</div>
+{% endblock %}
+
+
+{% block domready %}
+ 
+$('a.like').click(function(e){
+    e.preventDefault();
+    $.post('/like/',
+      {
+        id: $(this).data('id'),
+        action: $(this).data('action')
+      },
+      function(data){
+        if (data['status'] == 'ok')
+        {
+          var previous_action = $('a.like').data('action');
+
+          // toggle data-action
+          $('a.like').data('action', previous_action == 'like' ? 'unlike' : 'like');
+          // toggle link text
+          $('a.like').text(previous_action == 'like' ? 'Unlike' : 'Like');
+
+          // update total likes
+          var previous_likes = parseInt($('span.count .total').text());
+          $('span.count .total').text(previous_action == 'like' ? previous_likes + 1 : previous_likes - 1);
+        }
+      }
+    );
+  });
+{% endblock %}
