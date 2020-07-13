@@ -299,121 +299,9 @@
                      
                        {% endif %}   
 
-                       <div class="infinite-container">
-                     {% for post in posts %}
-                        <div class="infinite-item card">
-
-                            <!-- post title start -->
-                            <div class="post-title d-flex align-items-center">
-                                <!-- profile picture end -->
-                                {% if post.author.profile_img.url != '' %}
-                                <div class="profile-thumb">
-                                    <a href="#">
-                                        <figure class="profile-thumb-middle">
-                                            <img src="{{post.author.profile_img.url}}" alt="profile picture">
-                                        </figure>
-                                    </a>
-                                </div>
-
-                                {% else %}
-                                
-                                <div class="profile-thumb">
-                                    <a href="#">
-                                        <figure class="profile-thumb-middle">
-                                            <img src="{% static 'front' %}/assets/images/profile/profile-small-1.jpg" alt="profile picture">
-                                        </figure>
-                                    </a>
-                                </div>
-
-                                {% endif %}
-                                <!-- profile picture end -->
-
-                                <div class="posted-author">
-                                    <h6 class="author"><a href="profile.html">{{post.title}} </a></h6>
-                                    <span class="post-time">{{post.created_at|naturaltime}}</span>
-                                </div>
-
-                                <div class="post-settings-bar">
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
-                                    <div class="post-settings arrow-shape">
-                                        <ul>
-                                            <li><button>copy link to adda</button></li>
-                                            <li><button>edit post</button></li>
-                                            <li><button>embed adda</button></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- post title start -->
-                            <div class="post-content">
-                                <p class="post-desc pb-0">
-                                    {{post.content}}
-                                </p>
-                                {% if post.image.url != '' %}
-                                <div class="post-thumb-gallery">
-                                    <figure class="post-thumb img-popup">
-                                        <a href="assets/images/post/post-large-1.jpg">
-                                            <img src="{{post.image.url}}" alt="post image">
-                                        </a>
-                                    </figure>
-                                </div>
-                                {% endif %}
-
-
-                                
-                                
-                                
-                                <div class="post-meta">
-    {% with total_likes=post.users_like.count users_like=post.users_like.all %}
-    <div class="image-info">
-      <div>
-        <span class="count">
-         <span class="total">{{ total_likes }}</span>
-         like{{ total_likes|pluralize }}
-        </span>
-        
-        <a href="#" data-id="{{ post.id }}" data-action="{% if request.user in users_like %}un{% endif %}like" class="like button">
-          {% if request.user not in users_like %}
-            Like
-          {% else %}
-            Unlike
-          {% endif %}
-        </a>
-      </div>
-      
-    </div>
-    <div class="image-likes">
-     
-     
-    </div>
-  {% endwith %}
-                                
-                                    <button class="post-meta-like">
-                                       
-                                        <strong>206</strong>
-                                    </button>
-                                    <ul class="comment-share-meta">
-                                        <li>
-                                            <button class="post-comment">
-                                                <i class="bi bi-chat-bubble"></i>
-                                                <span>41 {{post.get_absolute_url}}</span>
-                                            </button>
-                                        </li>
-                                        <li>
-                                            <button class="post-share">
-                                                <i class="bi bi-share"></i>
-                                                <span>07</span>
-                                            </button>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-
-                       {% endfor %}
-                     </div>
+                     <div id="image-list">
+    {% include "users/posts_ajax.html" %}
+  </div>
                      
                    
                 
@@ -610,7 +498,7 @@
           
            $totalFollowers.text(previous_action == 'follow' ? previous_followers + 1 : previous_followers - 1);
            
-           console.log(previous_action);
+           
        
         }
       }
@@ -652,7 +540,26 @@
 
 
 
-  
+var page = 1;
+  var empty_page = false;
+  var block_request = false;
+
+  $(window).scroll(function() {
+    var margin = $(document).height() - $(window).height() - 200;
+    if  ($(window).scrollTop() > margin && empty_page == false && block_request == false) {
+     block_request = true;
+      page += 1;
+      $.get('?page=' + page, function(data) {
+       if(data == '') {
+          empty_page = true;
+        }
+        else {
+          block_request = false;
+          $('#image-list').append(data);
+        }
+      });
+    }
+  });
 {% endblock %}
 
 

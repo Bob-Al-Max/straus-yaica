@@ -6,7 +6,7 @@ from django.core.files.storage import FileSystemStorage
 from main.models import Main
 from posts.models import Posts
 from django.views.generic import RedirectView
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic.detail import DetailView
 from django.views.generic.list import MultipleObjectMixin
 from django.views.generic.edit import UpdateView
@@ -43,17 +43,38 @@ def user_detail(request, pk):
     main = Main.objects.get(pk=1)
     user = CustomUser.objects.get(pk=pk,is_active=True)
     posts = user.posts_set.all().order_by('-created_at')
-    paginator = Paginator(posts, 4)
+    paginator = Paginator(posts, 2)
 
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
+    page = request.GET.get('page')
 
     supporters = CustomUser.objects.filter(team = user.team)
-    context = {'section': 'people','user':user, 'posts':posts, 'main':main,'supporters':supporters, 'page_obj': page_obj}
-
     
 
-    return render(request, 'users/user-detail2.html', context)
+    try:
+        posts = paginator.page(page)
+        context = {'section': 'people','user':user, 'posts':posts, 'main':main,'supporters':supporters}
+
+    except PageNotAnInteger:
+        # Если переданная страница не является числом, возвращаем первую.
+        posts = paginator.page(1)
+        context = {'section': 'people','user':user, 'posts':posts, 'main':main,'supporters':supporters}
+
+    except EmptyPage:
+        if request.is_ajax():
+            # Если получили AJAX-запрос с номером страницы, большим, чем их количество,
+            # возвращаем пустую страницу.
+            return HttpResponse('')
+
+        posts = paginator.page(paginator.num_pages) 
+        context = {'section': 'people','user':user, 'posts':posts, 'main':main,'supporters':supporters}
+
+    if request.is_ajax():
+        return render(request, 'users/posts_ajax.html', context)
+
+    return render(request, 'users/user-detail2.html', context)    
+
+
+
 
 
 
