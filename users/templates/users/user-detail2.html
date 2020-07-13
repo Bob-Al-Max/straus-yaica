@@ -93,6 +93,8 @@
     </a>
     
   {% endwith %}
+
+  
                                         </p>
                                         
                                         
@@ -581,25 +583,25 @@
 
 
 {% block domready %}
-  $('a.follow').click(function(e){
+   $('a.follow').click(function(e){
     e.preventDefault();
     const $clickedFollowButton = $( this );
     
     $.post('{% url "user_follow" %}',
+    
       {
-        id: $(this).data('id'),
-        action: $(this).data('action')
+        id: $clickedFollowButton.data('id'),
+        action: $clickedFollowButton.data('action')
       },
       function(data){
         if (data['status'] == 'ok') {
           var previous_action = $clickedFollowButton.data('action');
 
           // toggle data-action
-          $clickedFollowButton.data('action',
-            previous_action == 'follow' ? 'unfollow' : 'follow');
+          $clickedFollowButton.data('action', previous_action == 'follow' ? 'unfollow' : 'follow');
+          
           // toggle link text
-          $clickedFollowButton.text(
-            previous_action == 'follow' ? 'Unfollow' : 'Follow');
+          $clickedFollowButton.text(previous_action == 'follow' ? 'Unfollow' : 'Follow');
 
           // update total followers
           const $totalFollowers = $clickedFollowButton.prev('span.count-f').children('.total-f');
@@ -608,12 +610,14 @@
           
            $totalFollowers.text(previous_action == 'follow' ? previous_followers + 1 : previous_followers - 1);
            
-           
+           console.log(previous_action);
        
         }
       }
     );
-  }); 
+  });  
+
+ 
 
 
 
@@ -644,6 +648,14 @@
       }
     );
   });
+
+
+
+
+  
 {% endblock %}
+
+
+
 
 
